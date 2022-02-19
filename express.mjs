@@ -46,6 +46,29 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
     res.end()
   });
 
+  const eventListeners = [];
+  app.get('/api/events', async (req, res) => {
+    const listener = {req: req, res: res};
+    eventListeners.push(listener);
+    req.once('close', function () {
+      console.log('done request');
+      eventListeners.splice(eventListeners.indexOf(listener), 1);
+    });
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Cache-Control', 'no-cache');
+
+    res.write("data: start\n\n");
+    for (const seconds of range(0, 60)) {
+      await sleep(seconds * 1000);
+      res.write("data: " + seconds + " seconds later\n\n");
+    }
+    res.write("end\n\n");
+
+    res.end()
+  });
+
   /**
    * @type {import('vite').ViteDevServer}
    */
