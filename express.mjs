@@ -1,9 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
-import ServeStatic from 'serve-static';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+
+import morgan from 'morgan';
+import express from 'express';
+import ServeStatic from 'serve-static';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +17,7 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
   const indexProd = isProd ? fs.readFileSync(resolve('dist/index.html'), 'utf-8') : ''
 
   const app = express()
+  app.use(morgan('combined'))
 
   const range = (start, end) => new Array(end - start).fill(0).map((_, idx) => start + idx);
 
