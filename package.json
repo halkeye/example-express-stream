@@ -8,8 +8,8 @@
     "start": "node ./express.mjs"
   },
   "engines": {
-    "node": "16.13.x",
-    "npm": "8.1.x"
+    "node": ">=16.14",
+    "npm": ">=8.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.2.0",
