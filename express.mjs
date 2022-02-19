@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import ServeStatic from 'serve-static';
-import {createServer as createViteServer} from 'vite';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
@@ -49,6 +48,7 @@ export async function createServer(root = process.cwd(), isProd = process.env.NO
    */
   let vite
   if (!isProd) {
+    const {createServer: createViteServer} = await import('vite')
     vite = await createViteServer({
       root,
       logLevel: isTest ? 'error' : 'info',
